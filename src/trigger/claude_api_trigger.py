@@ -2,6 +2,7 @@
 
 import time
 import base64
+import json
 
 from P4 import P4, P4Exception
 
@@ -94,10 +95,32 @@ def gather_file_process_list(changelist):
     print('failed', failed)
     return attribute_dict
 
+def set_default(obj):
+    """
+    Converts any set to a list type object.
+    """
+    if isinstance(obj, set):
+        return list(obj)
+    elif isinstance(obj, bytes):
+        return obj.decode('utf-8')
+
+    return obj
+
+
+def write_json(data_dict, output_path, sort_keys=False):
+    """
+    Writes a dictionary into a json file.
+    """
+    with open(output_path, "w") as outfile:
+        json.dump(
+            data_dict, outfile, default=set_default, indent=4, sort_keys=sort_keys
+        )
+
 
 def main(changelist):
     file_process_dict = gather_file_process_list(changelist)
-    print(file_process_dict)
+    write_json(file_process_dict, 'E:/repos/py_in_the_sky_2024/examples/trigger_example_{}.json'.format(changelist))
+    # print(file_process_dict)
 
 if __name__ == "__main__" :
     main(141) # good image
