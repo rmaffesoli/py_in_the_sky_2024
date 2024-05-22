@@ -9,12 +9,13 @@ from P4 import P4, P4Exception
 
 p4 = P4()
 p4.user = 'rmaffesoli'
-p4.port = 'ssl:helix:1666'
+p4.port = 'ssl:p4.demo.perforce.rocks:1666'
 p4.connect()
 
 
 def gather_file_attrs(depot_path: str, action: str):
     file_attributes = p4.run('fstat','-Oae', depot_path)
+    print(file_attributes)
     hex_preview_attr = file_attributes[0].get('attr-preview')
     hex_thumb_attr = file_attributes[0].get('attr-thumb')
 
@@ -48,6 +49,7 @@ def get_image_type(image_data):
     else:
         return 'unknown'
 
+
 def gather_changelist_attrs(description):
     attr_dict = {
         "changelist": description.get('change'),
@@ -60,6 +62,7 @@ def gather_changelist_attrs(description):
     }
 
     return attr_dict
+
 
 def gather_file_process_list(changelist):
     description = p4.run_describe(changelist)
@@ -74,7 +77,7 @@ def gather_file_process_list(changelist):
 
     for i, depot_file in enumerate(description["depotFile"]):
         action = description['action'][i]
-        
+        file_result = None
         if depot_file not in attempts:
             attempts[depot_file] = 1
 
@@ -88,12 +91,14 @@ def gather_file_process_list(changelist):
                     print("did it")
                     completed.append(depot_file)
                     attribute_dict['file_list'].append(file_result)
-            failed.append(depot_file)
+            if not file_result:
+                failed.append(depot_file)
 
     print('attempts', attempts)
     print('completed', completed)
     print('failed', failed)
     return attribute_dict
+
 
 def set_default(obj):
     """
@@ -123,5 +128,4 @@ def main(changelist):
     # print(file_process_dict)
 
 if __name__ == "__main__" :
-    main(141) # good image
-    main(158)  # intentional Fail
+    main(961) # good image
