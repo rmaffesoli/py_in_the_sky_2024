@@ -24,7 +24,7 @@ DEFAULT_SYSTEM_PROMPT = """Look at the thumbnail image of this digital asset as 
 
 Use your existing knowledge of naming conventions, folder structures, thumbnail generation, and how artists write changelist descriptions when submitting their work. Use your judgement to determine which pieces of information apply to this thumbnail and what tags and description will be most helpful for searchability later on.
 
-Tags should be sorted in order of confidence. Put your best tags at the top. If the file type is not obvious from the file extension, be sure to include it as a tag. For example, Unreal Engine assets are all .uasset files but they have many different types, like "BlueprintGeneratedClass", "Texture2D", "StaticMesh", "SkeletalMesh", etc.
+Tags should be sorted in order of confidence. Put your best tags at the top. If the user tells you the file type and it is not obvious from the file extension, be sure to include it as a tag. For example, Unreal Engine assets are all .uasset files but they have many different types, like "BlueprintGeneratedClass", "Texture2D", "StaticMesh", "SkeletalMesh", etc. Do not guess about the file type if you are not sure. For example, in image is not necessarily a texture, so don't tag it as such unless you are sure.
 
 The output should be in JSON format with the keys "tags" and "description"
 
@@ -101,7 +101,11 @@ class ClaudeHaiku:
                         "source": {
                             "type": "base64",
                             "media_type": image_type,
-                            "data": b64image,
+                            "data": (
+                                b64image.decode("utf-8")
+                                if isinstance(b64image, bytes)
+                                else b64image
+                            ),
                         },
                     },
                     {"type": "text", "text": message},
@@ -110,9 +114,12 @@ class ClaudeHaiku:
         ]
         response = self._invoke_model(messages)
         try:
-            json_response = json.loads(response["content"][0]["text"])
-            logger.info(json_response)
-            return json_response
+            response_message = json.loads(response["content"][0]["text"])
+            input_cost = response["usage"]["input_tokens"] * INPUT_TOKEN_PRICE
+            output_cost = response["usage"]["output_tokens"] * OUTPUT_TOKEN_PRICE
+            logger.info(f"Total Cost: ${input_cost + output_cost}")
+            response_message["cost"] = input_cost + output_cost
+            return response_message
 
         except json.JSONDecodeError as err:
             message = err.response["Error"]["Message"]
@@ -142,13 +149,6 @@ class ClaudeHaiku:
         response = self.bedrock_runtime.invoke_model(body=body, modelId=self.model_id)
         response_body = json.loads(response.get("body").read())
 
-        try:
-            input_cost = response_body["usage"]["input_tokens"] * INPUT_TOKEN_PRICE
-            output_cost = response_body["usage"]["output_tokens"] * OUTPUT_TOKEN_PRICE
-            logger.info(f"Total Cost: ${input_cost + output_cost}")
-        except KeyError as err:
-            message = err.response["Error"]["Message"]
-            logger.error("Missing input and/or output tokens response: %s", message)
         return response_body
 
 
