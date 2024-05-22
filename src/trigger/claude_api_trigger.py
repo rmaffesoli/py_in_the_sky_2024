@@ -1,17 +1,7 @@
 # -*- coding: utf-8 -*-
-# import os
-# import sys
-# import random
+
 import time
 import base64
-# import tempfile
-# import string
-# import binascii
-# import argparse
-
-# from PIL import Image
-
-# from pathlib import Path
 
 from P4 import P4, P4Exception
 
