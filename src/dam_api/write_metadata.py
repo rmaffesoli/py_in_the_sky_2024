@@ -99,7 +99,7 @@ def attach_additional_tags(selected_asset, tags):
                 'path': selected_asset
             }
         ],
-        'create_auto': tags,
+        'create': tags,
 
     }
         
