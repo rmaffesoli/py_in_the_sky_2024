@@ -3,6 +3,7 @@ import logging
 import argparse
 import tempfile
 
+import environment
 
 from P4 import P4, P4Exception
 

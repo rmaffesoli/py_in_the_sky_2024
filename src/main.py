@@ -1,6 +1,8 @@
 import logging
 import argparse
 
+import environment
+
 from trigger import claude_api_trigger
 from dam_api.write_metadata import attach_metadata, attach_additional_tags
 import tagging_ai
