@@ -87,4 +87,34 @@ def attach_metadata(selected_asset, field_name, value):
     except:
         print('no metadata json')
 
+def attach_additional_tags(selected_asset, tags):
+    if not tags:
+        return
     
+    add_asset_tags_url = "{}/api/p4/batch/tags".format(SERVER_ADDRESS)
+    add_asset_tags_body = {
+        'account_key': ACCOUNT_KEY,
+        'paths':[
+            {
+                'path': selected_asset
+            }
+        ],
+        'create_auto': tags,
+
+    }
+        
+    if '@' in selected_asset:
+        asset_path, asset_identifier = selected_asset.split('@')
+        add_asset_tags_body['paths'][0]['path'] = asset_path
+        add_asset_tags_body['paths'][0]['identifier'] = asset_identifier
+
+    add_asset_tags_response = requests.put(
+        add_asset_tags_url, 
+        json=add_asset_tags_body,
+    )
+
+    print(add_asset_tags_response)
+    try:
+        print(add_asset_tags_response.json())
+    except:
+        print('no tags json')

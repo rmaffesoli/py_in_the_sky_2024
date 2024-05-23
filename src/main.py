@@ -2,7 +2,7 @@ import logging
 import argparse
 
 from trigger import claude_api_trigger
-from dam_api.write_metadata import attach_metadata
+from dam_api.write_metadata import attach_metadata, attach_additional_tags
 import tagging_ai
 
 
@@ -23,6 +23,7 @@ def main(changelist):
         attach_metadata(
             result["depot_path"], "image description", result["description"]
         )
+        attach_additional_tags(result["depot_path"], result["tags"])
 
     logger.info(ai_results)
     return ai_results
