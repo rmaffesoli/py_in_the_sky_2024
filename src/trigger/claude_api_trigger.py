@@ -41,6 +41,7 @@ def gather_file_attrs(depot_path: str, action: str):
 
     return file_attr_dict
 
+
 def get_image_type(image_data):
     if image_data.startswith(b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A'):
         return 'image/png'
@@ -128,4 +129,4 @@ def main(changelist):
     # print(file_process_dict)
 
 if __name__ == "__main__" :
-    main(961) # good image
+    main(1007)
