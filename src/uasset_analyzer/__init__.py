@@ -104,7 +104,8 @@ class UassetReader:
             return ""
 
         if length > 0:
-            string_bytes = self.file_obj.read(length)[:-1]
+            string_bytes = self.file_obj.read(length)
+            string_bytes = string_bytes[:-1]  # remove null terminator
         string = string_bytes.decode(
             "utf-8"
         )  # assuming the string is in utf-8 encoding
@@ -144,9 +145,9 @@ class UassetReader:
         ):
             raise Exception("Asset unversioned")
 
-        count = self.read_int32()
+        custom_version_count = self.read_int32()
         self.header["CustomVersions"] = []
-        for _ in range(count):
+        for _ in range(custom_version_count):
             key = self.read_fguidSlot()
             version = self.read_int32()
             self.header["CustomVersions"].append({key: version})
@@ -294,6 +295,8 @@ class UassetReader:
         ]
 
     def read_gatherable_text_data(self):
+        return
+        # TODO: Not sure if anything interesting is here.
         self.file_obj.seek(self.header["GatherableTextDataOffset"])
         self.gatherable_text_data = []
         for _ in range(self.header["GatherableTextDataCount"]):
@@ -308,9 +311,10 @@ class UassetReader:
                 },
             }
             if text_data["SourceData"]["SourceStringMetadata"]["ValueCount"] > 0:
-                raise Exception(
-                    "unsupported SourceStringMetaData from readGatherableTextData"
-                )
+                print("unsupported SourceStringMetaData from readGatherableTextData")
+                # raise Exception(
+                #     "unsupported SourceStringMetaData from readGatherableTextData"
+                # )
 
             text_data["SourceSiteContexts"] = []
             countSourceSiteContexts = self.read_int32()
@@ -333,23 +337,33 @@ class UassetReader:
         self.file_obj.seek(self.header["ImportOffset"])
         self.imports = []
         for _ in range(self.header["ImportCount"]):
-            import_data = {
-                "ClassPackage": self.find_name(self.read_uint64()),
-                "ClassName": self.find_name(self.read_uint64()),
-                "OuterIndex": self.read_int32(),
-                "ObjectName": self.find_name(self.read_uint64()),
-                "PackageName": self.find_name(
-                    self.read_uint64()
-                    if self.header["FileVersionUE4"] >= VER_UE4_NON_OUTER_PACKAGE_IMPORT
-                    else 0
-                ),
-                "bImportOptional": (
+            class_package = self.read_uint64()
+            class_name = self.read_uint64()
+            outer_index = self.read_int32()
+            object_name = self.read_uint64()
+            package_name = (
+                self.read_uint64()
+                if self.header["FileVersionUE4"] >= VER_UE4_NON_OUTER_PACKAGE_IMPORT
+                else 0
+            )
+            b_import_optional = (
+                (
                     self.read_int32()
                     if self.header["FileVersionUE4"] >= VER_UE5_OPTIONAL_RESOURCES
                     else 0
                 ),
-            }
-            self.imports.append(import_data)
+            )
+
+            self.imports.append(
+                {
+                    "ClassPackage": self.find_name(class_package),
+                    "ClassName": self.find_name(class_name),
+                    "OuterIndex": outer_index,
+                    "ObjectName": self.find_name(object_name),
+                    "PackageName": self.find_name(package_name),
+                    "bImportOptional": b_import_optional,
+                }
+            )
 
     def read_exports(self):
         pass
