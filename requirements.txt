@@ -1,0 +1,9 @@
+boto3==1.34.110
+botocore==1.34.110
+jmespath==1.0.1
+p4python==2023.2.2581979
+pillow==10.3.0
+python-dateutil==2.9.0.post0
+s3transfer==0.10.1
+six==1.16.0
+urllib3==2.2.1

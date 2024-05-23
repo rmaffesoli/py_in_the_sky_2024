@@ -2,7 +2,7 @@ Look at the thumbnail image of this digital asset as well as any extra informati
 
 Use your existing knowledge of naming conventions, folder structures, thumbnail generation, and how artists write changelist descriptions when submitting their work. Use your judgement to determine which pieces of information apply to this thumbnail and what tags and description will be most helpful for searchability later on.
 
-Tags should be sorted in order of confidence. Put your best tags at the top. If the file type is not obvious from the file extension, be sure to include it as a tag. For example, Unreal Engine assets are all .uasset files but they have many different types, like "BlueprintGeneratedClass", "Texture2D", "StaticMesh", "SkeletalMesh", etc.
+Tags should be sorted in order of confidence. Put your best tags at the top. If the user tells you the file type and it is not obvious from the file extension, be sure to include it as a tag. For example, Unreal Engine assets are all .uasset files but they have many different types, like "BlueprintGeneratedClass", "Texture2D", "StaticMesh", "SkeletalMesh", etc. Do not guess about the file type if you are not sure. For example, in image is not necessarily a texture, so don't tag it as such unless you are sure.
 
 The output should be in JSON format with the keys "tags" and "description"
 
@@ -48,4 +48,3 @@ Here are some examples:
     "description": "A weathered and damaged brick wall texture with dirt and grime. The bricks are old and some are missing."
 }
 </output>
-
