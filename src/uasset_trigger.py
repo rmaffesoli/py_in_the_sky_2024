@@ -1,10 +1,13 @@
 from pathlib import Path
 import logging
+import argparse
+import tempfile
+
 
 from P4 import P4, P4Exception
 
 from uasset_analyzer import UassetReader
-import tempfile
+from dam_api.write_metadata import attach_metadata
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +28,20 @@ def main(changelist):
     logger.info(f"Analyzing {len(files)} files")
     results = analyze_files(files, changelist)
     logger.info(results)
-    return results
+
+    for result in results:
+        if result["uasset_type"]:
+            attach_metadata(result["depot_path"], "uasset type", result["uasset_type"])
+        if result["saved_by_version"]:
+            attach_metadata(
+                result["depot_path"], "saved by UE version", result["saved_by_version"]
+            )
+        if result["compatible_with_version"]:
+            attach_metadata(
+                result["depot_path"],
+                "compatible with UE version",
+                result["compatible_with_version"],
+            )
 
 
 def get_changelist_description(changelist):
@@ -76,8 +92,7 @@ def analyze_files(files, changelist):
                 logger.error(f"Failed to analyze {depot_path}: {err}")
             results.append(
                 {
-                    "change": changelist,
-                    "depot_path": depot_path,
+                    "depot_path": f"{depot_path}@{changelist}",
                     "uasset_type": uasset_type,
                     "saved_by_version": saved_by_version,
                     "compatible_with_version": compatible_with_version,
@@ -87,4 +102,11 @@ def analyze_files(files, changelist):
 
 
 if __name__ == "__main__":
-    main(998)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("changelist")
+
+    parsed_args = parser.parse_args()
+    if not parsed_args.changelist:
+        parser.error("Please provide a changelist argument")
+    cl = int(parsed_args.changelist)
+    main(cl)

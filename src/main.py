@@ -19,9 +19,10 @@ def main(changelist):
 
     ai_results = tagging_ai.process_changelist(file_process_dict)
 
-
     for result in ai_results:
-        attach_metadata(result['depot_path'], 'image description', result['description'])
+        attach_metadata(
+            result["depot_path"], "image description", result["description"]
+        )
 
     logger.info(ai_results)
     return ai_results
