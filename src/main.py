@@ -1,6 +1,8 @@
 import logging
+import argparse
 
 from trigger import claude_api_trigger
+from dam_api.write_metadata import attach_metadata
 import tagging_ai
 
 
@@ -17,9 +19,17 @@ def main(changelist):
 
     ai_results = tagging_ai.process_changelist(file_process_dict)
 
+
+    for result in ai_results:
+        attach_metadata(result['depot_path'], 'image description', result['description'])
+
     logger.info(ai_results)
     return ai_results
 
 
 if __name__ == "__main__":
-    main(1007)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("changelist")
+
+    parsed_args = parser.parse_args()
+    main(parsed_args.changelist)

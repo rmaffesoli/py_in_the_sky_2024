@@ -1,0 +1,75 @@
+[
+    {
+      "tags": [
+        "3D model",
+        "furniture",
+        "box",
+        "dark",
+        "minimal"
+      ],
+      "description": "A simple 3D model of a dark, minimal-style storage box or cabinet. The thumbnail image shows an angled view of the box against a plain, dark background.",
+      "cost": 0.000277,
+      "depot_path": "//demo_interiors_stream/loft/mainline/loft.fbx@1007"
+    },
+    {
+      "tags": [
+        "interior",
+        "loft",
+        "open-concept",
+        "modern",
+        "windows",
+        "furniture",
+        "couch",
+        "coffee-table",
+        "lighting",
+        "hardwood-floors"
+      ],
+      "description": "This image shows the interior of a spacious loft-style space. The room has high ceilings, large windows letting in natural light, and an open-concept layout with modern furniture such as a couch and coffee table. The floors are made of hardwood, and the space is lit by wall sconces. Overall, the image conveys a bright, airy, and contemporary living environment.",
+      "cost": 0.00037875,
+      "depot_path": "//demo_interiors_stream/loft/mainline/loft.jpg@1007"
+    },
+    {
+      "tags": [
+        "reeds",
+        "plants",
+        "cattails",
+        "nature",
+        "silhouette",
+        "minimalist",
+        "illustration"
+      ],
+      "description": "This image depicts a minimalist illustration of various reed or cattail plants with their tall, slender silhouettes against a plain white background. The image has a simple, stylized appearance, highlighting the organic forms and patterns of the natural elements.",
+      "cost": 0.00031925,
+      "depot_path": "//demo_interiors_stream/loft/mainline/sourceimages/reeds.jpg@1007"
+    },
+    {
+      "tags": [
+        "reeds",
+        "plants",
+        "nature",
+        "texture",
+        "background"
+      ],
+      "description": "The image shows a texture of tall reeds or grass silhouettes against a plain beige or tan background. The reeds are arranged in a repeating pattern and have a stylized, abstract appearance.",
+      "cost": 0.000292,
+      "depot_path": "//demo_interiors_stream/loft/mainline/sourceimages/reeds.psd@1007"
+    },
+    {
+      "tags": [
+        "interior",
+        "living room",
+        "furniture",
+        "armchair",
+        "sofa",
+        "window",
+        "curtain",
+        "blinds",
+        "natural light",
+        "modern",
+        "minimalist"
+      ],
+      "description": "This image depicts a modern, minimalist living room interior. It features large windows with adjustable blinds and curtains that allow natural light to flood the space. The room is furnished with comfortable-looking armchairs and a sofa, creating a cozy and relaxing environment.",
+      "cost": 0.00035099999999999997,
+      "depot_path": "//demo_interiors_stream/loft/mainline/sourceimages/Window_Treatments-1.gif@1007"
+    }
+  ]
