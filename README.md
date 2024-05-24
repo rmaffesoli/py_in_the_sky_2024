@@ -8,6 +8,10 @@
 * Jase Lindgren
 * Ryan Maffesoli
 
+### Video Explanation
+[![Youtube Video Explanation](https://github.com/rmaffesoli/py_in_the_sky_2024/assets/91618797/1b2dea35-35ae-48d7-bd95-2f7b26e866eb)](https://youtu.be/fIbUnETHFY4?si=KDUgh3rlcT27nuW0)
+
+
 ## Installation
 
 * Currently, the running triggers via source doesn't require any additional installation beyond cloning the repository, having Python 3.9 or later, and installing the requirements
